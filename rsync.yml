@@ -1,0 +1,20 @@
+---
+## Change local_path & remote_path to desired paths
+## Change rsync options if needed
+- hosts: all
+  vars:
+    local_path: /tmp/test/
+    remote_path: /tmp/test_bk/
+
+  vars_prompt:
+    - name: remote_server
+      prompt: Enter the remote server IP
+    - name: remote_user
+      prompt: Enter the remote user
+    - name: keyfile
+      prompt: Enter the keyfile
+
+  tasks:
+    - name: rsync {{ local_path }} to {{ remote_path }}
+      command: rsync -az -e "ssh -i /{{ remote_user }}/.ssh/{{ keyfile }}" {{ local_path }} {{ remote_user }}@{{ remote_server }}:{{ remote_path }}
+...
